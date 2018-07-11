@@ -64,7 +64,11 @@ function programItemCreator(title, description, organizer, location, start, end)
     parameter = "";
   }
 
-  if(( start.getDay() == parseInt(parameter) ||  ( start.getHours() < 6 && start.getDay() == parseInt(parameter) + 1 ) ) || parameter == ""){
+  if(parameter == '7'){
+    parameter = 0;
+  }
+
+  if(( start.getDay() == parseInt(parameter && start.getHours() > 5 ) ||  ( start.getHours() < 5 && start.getDay() == parseInt(parameter) + 1 ) ) || parameter == ""){
     mainNode.setAttribute("class", "items");
   	locationNode.setAttribute("class", "location");
     timeStartNode.setAttribute("class", "programtime-start");
