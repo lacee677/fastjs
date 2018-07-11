@@ -7,7 +7,7 @@ function fillZeros(st){
 
 function getProgramFromTheServer(){
   var xmlhttp=new XMLHttpRequest();
-  xmlhttp.open("GET", "https://kadbudapest.hu/gombacache/?type=program");
+  xmlhttp.open("GET", "https://www.gombaszog.sk/api/program");
   xmlhttp.onreadystatechange = function(){
     if(xmlhttp.readyState === 4){
       if(xmlhttp.status === 200){
@@ -43,9 +43,7 @@ function programItemCreator(title, description, organizer, location, start, end)
 
   var titleNode = document.createElement("DIV");
   var dayNode = document.createElement("DIV");
-  var descriptionNode = document.createElement("DIV");
-  var organizerNode = document.createElement("DIV");
-  var locationNode = document.createElement("DIV");
+  var locationNode = document.createElement("span");
   var timeBlock = document.createElement("DIV");
   var timeStartNode = document.createElement("SPAN");
 	var timeEndNode = document.createElement("SPAN");
@@ -56,32 +54,34 @@ function programItemCreator(title, description, organizer, location, start, end)
 	var locShow = location ? location : "";
 	var orgShow = organizer? organizer: "";
   var titleShow =title? title: "";
-  var descriptionShow = description? description: "";
 
-  mainNode.setAttribute("class", "items");
-	locationNode.setAttribute("class", "location");
-  dayNode.setAttribute("class", "day");
-  timeStartNode.setAttribute("class", "programtime-start");
-  timeStartNode.setAttribute("class", "programtime-end");
-  organizerNode.setAttribute("class", "organizer")
-  titleNode.setAttribute("class", "itemtitle");
+  var url = window.location.href;
+  url = url.split("?");
+  if(url[1]){
+    parameter = url[1].split("&");
+  }
+  else{
+    parameter = "";
+  }
 
-  mainNode.appendChild(dayNode);
-  mainNode.appendChild(titleNode);
-  mainNode.appendChild(timeBlock);
-  timeBlock.appendChild(timeStartNode);
-  timeBlock.appendChild(timeEndNode);
-  mainNode.appendChild(descriptionNode);
-  mainNode.appendChild(locationNode);
-  mainNode.appendChild(organizerNode);
+  if(( start.getDay() == parseInt(parameter) ||  ( start.getHours() < 6 && start.getDay() == parseInt(parameter) + 1 ) ) || parameter == ""){
+    mainNode.setAttribute("class", "items");
+  	locationNode.setAttribute("class", "location");
+    timeStartNode.setAttribute("class", "programtime-start");
+    timeStartNode.setAttribute("class", "programtime-end");
+    titleNode.setAttribute("class", "itemtitle");
 
-  timeStartNode.innerHTML = startShow;
-	timeEndNode.innerHTML = endShow;
-  locationNode.innerHTML = "<b>Helyszin:</b> " + locShow;
-  organizerNode.innerHTML = "<b>Partner:</b> " + orgShow;
-  dayNode.innerHTML = day;
-  titleNode.innerHTML = titleShow;
-	descriptionNode.innerHTML = "<b>Leiras:</b><br>" + descriptionShow;
+    mainNode.appendChild(titleNode);
+    mainNode.appendChild(timeBlock);
+    timeBlock.appendChild(locationNode);
+    timeBlock.appendChild(timeStartNode);
+    timeBlock.appendChild(timeEndNode);
+
+    timeStartNode.innerHTML = startShow;
+  	timeEndNode.innerHTML = endShow;
+    locationNode.innerHTML = locShow + ' | ';
+    titleNode.innerHTML = titleShow;
+  }
 
   return mainNode;
 }
