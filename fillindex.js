@@ -58,17 +58,18 @@ function programItemCreator(title, description, organizer, location, start, end)
   var url = window.location.href;
   url = url.split("?");
   if(url[1]){
-    parameter = url[1].split("&");
+    parameter = url[1];
+    if(parameter == '7'){
+      parameter = '0';
+    }
   }
   else{
     parameter = "";
   }
 
-  if(parameter == '7'){
-    parameter = 0;
-  }
+  
 
-  if(( start.getDay() == parseInt(parameter && start.getHours() > 5 ) ||  ( start.getHours() < 5 && start.getDay() == parseInt(parameter) + 1 ) ) || parameter == ""){
+  if(( start.getDay() == parseInt(parameter) && start.getHours() > 5 ) ||  ( start.getHours() < 5 && start.getDay() == parseInt(parameter) + 1 ) || parameter == ""){
     mainNode.setAttribute("class", "items");
   	locationNode.setAttribute("class", "location");
     timeStartNode.setAttribute("class", "programtime-start");
