@@ -68,8 +68,15 @@ function programItemCreator(title, description, organizer, location, start, end)
   }
 
   
+  var tempStart = '';
+  if(parameter == 6){
+    tempStart == 0;
+  }
+  else{
+    tempStart = parseInt(parameter) + 1;
+  }
 
-  if(( start.getDay() == parseInt(parameter) && start.getHours() > 5 ) ||  ( start.getHours() < 5 && start.getDay() == parseInt(parameter) + 1 ) || parameter == ""){
+  if(( start.getDay() == parseInt(parameter) && start.getHours() > 5 ) ||  ( start.getHours() < 5 && start.getDay() == tempStart) || parameter == ""){
     mainNode.setAttribute("class", "items");
   	locationNode.setAttribute("class", "location");
     timeStartNode.setAttribute("class", "programtime-start");
