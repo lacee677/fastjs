@@ -1,21 +1,21 @@
-function fillZeros(st){
-	if((st.toString().length)<2) {
-		return "0" + st.toString();
-	}
-	return st;
+function fillZeros(st) {
+  if ((st.toString().length) < 2) {
+    return "0" + st.toString();
+  }
+  return st;
 }
 
-function getProgramFromTheServer(){
-  var xmlhttp=new XMLHttpRequest();
+function getProgramFromTheServer() {
+  var xmlhttp = new XMLHttpRequest();
   xmlhttp.open("GET", "https://www.gombaszog.sk/api/program");
-  xmlhttp.onreadystatechange = function(){
-    if(xmlhttp.readyState === 4){
-      if(xmlhttp.status === 200){
+  xmlhttp.onreadystatechange = function () {
+    if (xmlhttp.readyState === 4) {
+      if (xmlhttp.status === 200) {
         var answer = JSON.parse(xmlhttp.responseText);
-          console.log("Programok frissítve!");
-          renderPrograms(answer);
+        console.log("Programok frissítve!");
+        renderPrograms(answer);
       }
-      else{
+      else {
         console.log("Hiba: " + xmlhttp.statusText);
       }
     }
@@ -23,62 +23,65 @@ function getProgramFromTheServer(){
   xmlhttp.send();
 }
 
-function renderPrograms(programs){
+function renderPrograms(programs) {
   var actProgram = document.getElementById("contentdiv");
 
-  for(var i=0; i < programs.program.length; i++){
+  for (var i = 0; i < programs.program.length; i++) {
     actProgram.appendChild(programItemCreator(programs.program[i].name, programs.program[i].description, programs.program[i].partner, programs.program[i].location, new Date(programs.program[i].start), new Date(programs.program[i].end)));
   }
 }
 
-function programItemCreator(title, description, organizer, location, start, end){
+function programItemCreator(title, description, organizer, location, start, end) {
 
   var days = ["Vasárnap", "Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat"];
 
-  function day(cday){ // day of the week
-  	return days[cday];
+  function day(cday) { // day of the week
+    return days[cday];
   }
 
-	var mainNode = document.createElement("DIV");
+  var mainNode = document.createElement("DIV");
 
   var titleNode = document.createElement("DIV");
   var dayNode = document.createElement("DIV");
   var locationNode = document.createElement("span");
   var timeBlock = document.createElement("DIV");
   var timeStartNode = document.createElement("SPAN");
-	var timeEndNode = document.createElement("SPAN");
+  var timeEndNode = document.createElement("SPAN");
+  var timeSpanNode = document.createElement("SPAN");
 
   var startShow = fillZeros(start.getHours()) + ":" + fillZeros(start.getMinutes());
   var day = day(start.getDay());
-	var endShow = ((new Date(end-start)).getMinutes() === 1)?"":" - " + fillZeros(end.getHours()) + ":" + fillZeros(end.getMinutes());
-	var locShow = location ? location : "";
-	var orgShow = organizer? organizer: "";
-  var titleShow =title? title: "";
+  var endShow = ((new Date(end - start)).getMinutes() === 1) ? "" : " - " + fillZeros(end.getHours()) + ":" + fillZeros(end.getMinutes());
+  var timeSpan = ((new Date(end - start).getDay() - 4) == 0) ? "" : new Date(end - start).getDay() - 4;
+  timeSpan += " " + fillZeros(new Date(end - start).getHours() - 1) + ":" + fillZeros(new Date(end - start).getMinutes());
+  var locShow = location ? location : "";
+  var orgShow = organizer ? organizer : "";
+  var titleShow = title ? title : "";
 
   var url = window.location.href;
   url = url.split("?");
-  if(url[1]){
+  if (url[1]) {
     parameter = url[1];
-    if(parameter == '7'){
+    if (parameter == '7') {
       parameter = '0';
     }
   }
-  else{
+  else {
     parameter = "";
   }
 
-  
+
   var tempStart = '';
-  if(parameter == 6){
+  if (parameter == 6) {
     tempStart == 0;
   }
-  else{
+  else {
     tempStart = parseInt(parameter) + 1;
   }
 
-  if(( start.getDay() == parseInt(parameter) && start.getHours() > 5 ) ||  ( start.getHours() < 5 && start.getDay() == tempStart) || parameter == ""){
+  if ((start.getDay() == parseInt(parameter) && start.getHours() > 5) || (start.getHours() < 5 && start.getDay() == tempStart) || parameter == "") {
     mainNode.setAttribute("class", "items");
-  	locationNode.setAttribute("class", "location");
+    locationNode.setAttribute("class", "location");
     timeStartNode.setAttribute("class", "programtime-start");
     timeStartNode.setAttribute("class", "programtime-end");
     titleNode.setAttribute("class", "itemtitle");
@@ -88,9 +91,11 @@ function programItemCreator(title, description, organizer, location, start, end)
     timeBlock.appendChild(locationNode);
     timeBlock.appendChild(timeStartNode);
     timeBlock.appendChild(timeEndNode);
+    timeBlock.appendChild(timeSpanNode);
 
     timeStartNode.innerHTML = startShow;
-  	timeEndNode.innerHTML = endShow;
+    timeEndNode.innerHTML = endShow;
+    timeSpanNode.innerHTML = ' | ' + timeSpan;
     locationNode.innerHTML = locShow + ' | ';
     titleNode.innerHTML = titleShow;
   }
