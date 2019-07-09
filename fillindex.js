@@ -1,5 +1,6 @@
 var url = window.location.href;
 url = decodeURI(url)
+var hasParameter = false;
 
 
 if(url.split("?")){
@@ -8,6 +9,7 @@ if(url.split("?")){
     url = url[1].split("=")
     if(url[1].split(",")){
       url = url[1].split(",")
+      hasParameter = true;
     }
   }
 }
@@ -91,9 +93,10 @@ function programItemCreator(title, description, organizer, location, start, end)
       found = true;
     }
   }
+  if(url.length)
   console.log(url)
 
-  if (((start.getDay() == parseInt(parameter) && start.getHours() > 5) || (start.getHours() < 5 && start.getDay() == tempStart) || parameter == "" )&& found == true) {
+  if (((start.getDay() == parseInt(parameter) && start.getHours() > 5) || (start.getHours() < 5 && start.getDay() == tempStart) || parameter == "" )&& ( found == true || hasParameter == false)) {
     mainNode.setAttribute("class", "items");
     locationNode.setAttribute("class", "location");
     timeStartNode.setAttribute("class", "programtime-start");
