@@ -68,6 +68,7 @@ function programItemCreator(title, description, organizer, location, start, end)
   var timeStartNode = document.createElement("SPAN");
   var timeEndNode = document.createElement("SPAN");
   var timeSpanNode = document.createElement("SPAN");
+  var descriptionNode = document.createElement("SPAN");
 
   var startShow = fillZeros(start.getHours()) + ":" + fillZeros(start.getMinutes());
   var day = day(start.getDay());
@@ -77,6 +78,7 @@ function programItemCreator(title, description, organizer, location, start, end)
   var locShow = location ? location : "";
   var orgShow = organizer ? organizer : "";
   var titleShow = title ? title : "";
+  var description = description;
 
   parameter = "";
   tempStart = 0;
@@ -104,12 +106,14 @@ function programItemCreator(title, description, organizer, location, start, end)
     timeBlock.appendChild(timeEndNode);
     timeBlock.appendChild(timeSpanNode);
     timeBlock.appendChild(locationNode);
+    timeBlock.appendChild(descriptionNode);
 
     timeStartNode.innerHTML = day + " | " + startShow;
     timeEndNode.innerHTML = endShow;
     timeSpanNode.innerHTML = " > " + timeSpan + ' | ' ;
     locationNode.innerHTML = locShow + ' | ';
     titleNode.innerHTML = titleShow;
+    descriptionNode.innerHTML = description;
   }
 
   return mainNode;
