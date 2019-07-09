@@ -1,6 +1,7 @@
 var url = window.location.href;
 url = decodeURI(url)
 
+
 if(url.split("?")){
   url = url.split("?")
   if(url[1].split("=")){
@@ -11,8 +12,10 @@ if(url.split("?")){
   }
 }
 
-function decodeHtml(str) {
-  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+function decodeHtml(html) {
+  var txt = document.createElement("textarea");
+  txt.innerHTML = html;
+  return txt.value;
 }
 
 function fillZeros(st) {
