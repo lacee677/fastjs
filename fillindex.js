@@ -1,3 +1,15 @@
+var url = window.location.href;
+
+if(url.split("?")){
+  url = url.split("?")
+  if(url[1].split("=")){
+    url = url[1].split("=")
+    if(url[1].split(",")){
+      url = url[1].split(",")
+    }
+  }
+}
+
 function fillZeros(st) {
   if ((st.toString().length) < 2) {
     return "0" + st.toString();
@@ -58,28 +70,20 @@ function programItemCreator(title, description, organizer, location, start, end)
   var orgShow = organizer ? organizer : "";
   var titleShow = title ? title : "";
 
-  var url = window.location.href;
-  url = url.split("?");
-  if (url[1]) {
-    parameter = url[1];
-    if (parameter == '7') {
-      parameter = '0';
+  parameter = "";
+  tempStart = 0;
+
+  found = false;
+
+  for(var i = 0; i < url.length; i++){
+    url[i] = decodeURI((url[i]))
+    if(locShow == url[i]){
+      found = true;
     }
   }
-  else {
-    parameter = "";
-  }
+  console.log(url)
 
-
-  var tempStart = '';
-  if (parameter == 6) {
-    tempStart == 0;
-  }
-  else {
-    tempStart = parseInt(parameter) + 1;
-  }
-
-  if ((start.getDay() == parseInt(parameter) && start.getHours() > 5) || (start.getHours() < 5 && start.getDay() == tempStart) || parameter == "") {
+  if (((start.getDay() == parseInt(parameter) && start.getHours() > 5) || (start.getHours() < 5 && start.getDay() == tempStart) || parameter == "" )&& found == true) {
     mainNode.setAttribute("class", "items");
     locationNode.setAttribute("class", "location");
     timeStartNode.setAttribute("class", "programtime-start");
@@ -88,14 +92,14 @@ function programItemCreator(title, description, organizer, location, start, end)
 
     mainNode.appendChild(titleNode);
     mainNode.appendChild(timeBlock);
-    timeBlock.appendChild(locationNode);
     timeBlock.appendChild(timeStartNode);
     timeBlock.appendChild(timeEndNode);
     timeBlock.appendChild(timeSpanNode);
+    timeBlock.appendChild(locationNode);
 
-    timeStartNode.innerHTML = startShow;
+    timeStartNode.innerHTML = day + " | " + startShow;
     timeEndNode.innerHTML = endShow;
-    timeSpanNode.innerHTML = ' | ' + timeSpan;
+    timeSpanNode.innerHTML = " > " + timeSpan + ' | ' ;
     locationNode.innerHTML = locShow + ' | ';
     titleNode.innerHTML = titleShow;
   }
