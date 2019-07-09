@@ -11,6 +11,10 @@ if(url.split("?")){
   }
 }
 
+function decodeHtml(str) {
+  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
 function fillZeros(st) {
   if ((st.toString().length) < 2) {
     return "0" + st.toString();
@@ -77,6 +81,7 @@ function programItemCreator(title, description, organizer, location, start, end)
   found = false;
 
   for(var i = 0; i < url.length; i++){
+    url[i] = decodeHtml(url[i])
     if(locShow == url[i]){
       found = true;
     }
