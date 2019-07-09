@@ -1,4 +1,5 @@
 var url = window.location.href;
+url = decodeURI(url)
 
 if(url.split("?")){
   url = url.split("?")
@@ -76,7 +77,6 @@ function programItemCreator(title, description, organizer, location, start, end)
   found = false;
 
   for(var i = 0; i < url.length; i++){
-    url[i] = decodeURI((url[i]))
     if(locShow == url[i]){
       found = true;
     }
